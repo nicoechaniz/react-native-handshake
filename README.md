@@ -1,6 +1,9 @@
 
 # react-native-handshake
 
+This simple module is intended to be used with the react-native-nsd module to send and receive handshake messages to/from other discovered peers.
+It is tested to work with react-native@0.55.4
+
 ## Getting started
 
 `$ npm install react-native-handshake --save`
@@ -10,7 +13,6 @@
 `$ react-native link react-native-handshake`
 
 ### Manual installation
-
 
 #### Android
 
@@ -31,7 +33,33 @@
 ## Usage
 ```javascript
 import { Handshake } from 'react-native-handshake';
+import { DeviceEventEmitter } from 'react-native';
 
-// TODO: What to do with the module?
+let HANDSHAKE_MESSAGE = "My cool message"
+
+
+DeviceEventEmitter.addListener('handshakeServerStarted', function(e){
+  console.log("handshakeServerStarted");
+  console.log(e.port);
+});
+
+DeviceEventEmitter.addListener('handshakeServerStopped', function(e){
+  console.log("handshakeServerStopped");
+});
+
+DeviceEventEmitter.addListener('peerPubKeyReceived', function(e){
+  console.log("JS: peer public key received");
+  console.log(e.key);
+});
+
+// Start the server. Will emit HANDSHAKE_MESSAGE to any client that connects 
+Handshake.startServer(HANDSHAKE_MESSAGE);
+
+// receive a Handshake message from a server. Will emit a peerPubKeyReceived event with the key.
+Handshake.receiveKey(e.host, e.port);
+
+// Stop the handshake server
+Handshake.stopServer()
+
 ```
   
