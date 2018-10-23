@@ -30,9 +30,8 @@
 
 ## Usage
 ```javascript
-import Handshake from 'react-native-handshake';
+import { Handshake } from 'react-native-handshake';
 
 // TODO: What to do with the module?
-Handshake;
 ```
   
