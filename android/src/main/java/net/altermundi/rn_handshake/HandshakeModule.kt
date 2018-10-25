@@ -54,7 +54,7 @@ class PubKeyReader(private val peerSocket: Socket){
         Log.d(TAG, "finished receiving peer key")
         job.join()
         peerSocket.close()
-        Log.d(TAG, "Closing connection to emmitting peer, #$connectionId")
+        Log.d(TAG, "Closing connection to emitting peer, #$connectionId")
         return@runBlocking(peerPubKey)
     }
 
@@ -64,15 +64,15 @@ class PubKeyReader(private val peerSocket: Socket){
     }
 }
 
-class PubKeyEmmiter(private val peerSocket: Socket) {
+class PubKeyEmitter(private val peerSocket: Socket) {
     private val connectionId: Int
 
     init {
         connectionId = ++numConnections
-        Log.d(TAG, "Emmiting PubKey on connection, #$connectionId")
+        Log.d(TAG, "emitting PubKey on connection, #$connectionId")
     }
 
-    fun emmitKey(pubKey: String) {
+    fun emitKey(pubKey: String) {
         val pw = PrintWriter(peerSocket.outputStream, true)
         try {
             pw.write("$pubKey\n")
@@ -126,7 +126,7 @@ class HandshakeModule(private val reactContext: ReactApplicationContext) : React
                     Log.d(TAG, "Accepting clients")
                     var clientSocket = serverSocket.accept()
                     Log.d(TAG, "Client connected. Port: ${clientSocket.port}")
-                    PubKeyEmmiter(clientSocket).emmitKey(pubKey)
+                    PubKeyEmitter(clientSocket).emitKey(pubKey)
                 }
             } catch (e: SocketException) {
                 Log.d(TAG, "Socket is closed")
