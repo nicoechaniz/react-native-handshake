@@ -1,7 +1,7 @@
 
 {
   "name": "react-native-handshake",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Very simple module to handle handshaking between peers that are using react-native-nsd for service discovery.",
   "main": "index.js",
   "scripts": {

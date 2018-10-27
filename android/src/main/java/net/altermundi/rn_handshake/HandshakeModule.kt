@@ -152,8 +152,14 @@ class HandshakeModule(private val reactContext: ReactApplicationContext) : React
     @ReactMethod
     fun receiveKey(host: String, port: Int) {
         Log.d(TAG, "Receiving from $host")
-        val socket = Socket(host, port)
-        val peerPubKey = PubKeyReader(socket).receiveKey()
+        var peerPubKey: String? = null
+        try {
+            val socket = Socket(host, port)
+            peerPubKey = PubKeyReader(socket).receiveKey()
+        } catch (e: java.net.ConnectException) {
+            Log.d(TAG, "Could not connect to peer.")
+            return
+        }
         val params = Arguments.createMap()
         params.putString("key", peerPubKey)
         sendEvent(reactContext, "peerPubKeyReceived", params)
